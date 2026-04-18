@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import Header from "./components/Header"
+import Login from "./pages/Login/Login"
 
 function App() {
 
@@ -7,7 +8,7 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" />
+        <Route path="/" element={<Login/>} />
         <Route path="/projects" />
       </Routes>
     </>
