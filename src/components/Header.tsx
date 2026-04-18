@@ -26,7 +26,7 @@ function Header() {
 
     return (
         <>
-            <header className=" w-full h-20 flex items-center px-10 justify-between shadow-xl">
+            <header className=" w-full h-20 flex items-center px-10 justify-between shadow-xl bg-white">
                 <nav>
                     <ul className="flex gap-10">
                         {urls.map((u, index) => (
