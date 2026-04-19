@@ -5,6 +5,7 @@ import api from '../../api/axios';
 
 function Register() {
 
+    // const [checkPassword, setCheckPassword] = useState<boolean>(false)
     const [error, setError] = useState<string | "">("")
     const [formData, setFormData] = useState({
         firstname: '',
@@ -54,7 +55,7 @@ function Register() {
     };
 
     return (
-        <section className="min-h-screen bg-linear-to-br from-violet-50 via-white to-violet-100 py-12 px-4">
+        <section className="fixed inset-0 w-full h-full bg-linear-to-br from-violet-50 via-white to-violet-100 py-12 px-4">
             <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-violet-100 overflow-hidden">
 
                 <span> {error} </span>
@@ -103,11 +104,13 @@ function Register() {
                                 <select name="role" onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-violet-200 bg-white focus:ring-2 focus:ring-violet-300 outline-none transition cursor-pointer">
                                     <option value="CLIENT">Client</option>
                                     <option value="SALON">Professionnel (Salon)</option>
+                                    <option value="ADMIN">Administrateur systeme</option>
                                 </select>
                             </div>
                             <div className="space-y-1">
                                 <label className="text-sm font-medium text-gray-700">Mot de passe</label>
                                 <input name="password" type="password" required onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-violet-200 focus:ring-2 focus:ring-violet-300 outline-none transition" placeholder="Min. 8 caractères" />
+                                
                             </div>
                         </div>
                     </div>

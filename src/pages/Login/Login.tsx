@@ -50,7 +50,7 @@ function Login() {
 
 
         <>
-            <section className="min-h-screen flex items-center justify-center bg-linear-to-br from-violet-50 via-white to-violet-100 p-4">
+            <section className="fixed inset-0 w-full h-full flex items-center justify-center bg-linear-to-br from-violet-50 via-white to-violet-100 p-4">
                 {/* Carte de Connexion */}
                 <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-violet-100 p-10 transform transition-all hover:scale-[1.01]">
 
