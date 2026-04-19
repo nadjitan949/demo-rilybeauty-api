@@ -2,10 +2,11 @@ import type { AxiosError } from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import { Eye, EyeClosed } from 'lucide-react';
 
 function Register() {
 
-    // const [checkPassword, setCheckPassword] = useState<boolean>(false)
+    const [checkPassword, setCheckPassword] = useState<boolean>(false)
     const [error, setError] = useState<string | "">("")
     const [formData, setFormData] = useState({
         firstname: '',
@@ -34,7 +35,7 @@ function Register() {
 
             const res = await api.post("/auth/sign-up", formData)
 
-            if(!res.data.success) return alert(res.data.message)
+            if (!res.data.success) return alert(res.data.message)
 
             alert(res.data.message)
 
@@ -55,10 +56,8 @@ function Register() {
     };
 
     return (
-        <section className="fixed inset-0 w-full h-full bg-linear-to-br from-violet-50 via-white to-violet-100 py-12 px-4">
+        <section className="fixed inset-0 w-full h-full bg-linear-to-br from-violet-50 via-white to-violet-100 py-12 px-4 overflow-auto">
             <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-violet-100 overflow-hidden">
-
-                <span> {error} </span>
 
                 {/* Header */}
                 <div className="bg-violet-600 p-8 text-center">
@@ -109,8 +108,12 @@ function Register() {
                             </div>
                             <div className="space-y-1">
                                 <label className="text-sm font-medium text-gray-700">Mot de passe</label>
-                                <input name="password" type="password" required onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-violet-200 focus:ring-2 focus:ring-violet-300 outline-none transition" placeholder="Min. 8 caractères" />
-                                
+                                <div className="w-full flex items-center justify-between rounded-xl border px-2 border-violet-200 focus:ring-2 focus:ring-violet-300 outline-none transition">
+                                    <input name="password" type={checkPassword ? "text" : "password"} required onChange={handleChange} className='w-full rounded-xl px-4 focus:ring-violet-300 outline-none transition py-3 h-full' placeholder="Min. 8 caractères" />
+                                    <div onClick={() => setCheckPassword((prev) => prev = !prev)} className='cursor-pointer'>
+                                        {checkPassword ? (<EyeClosed className='text-gray-400' />) : (<Eye className='text-gray-400' />)}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -152,6 +155,8 @@ function Register() {
                     </div>
                 </form>
             </div>
+
+            <span> {error} </span>
         </section>
     );
 }

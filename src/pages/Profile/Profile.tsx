@@ -2,6 +2,7 @@ import type { AxiosError } from "axios"
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
 import Clients from "./components/Clients/Clients"
+import Admins from "./components/Admins/Admins"
 
 interface User {
     role: string
@@ -12,14 +13,12 @@ function Profile() {
     const [error, setError] = useState<string | "">("")
     const [user, setUser] = useState<User | null>(null)
 
+
     useEffect(() => {
         const profile = async () => {
             try {
 
                 const res = await api.get("/auth/profile")
-
-                if (!res.data.success) return alert(res.data.message)
-
                 const user: User = res.data.infos
                 setUser(user)
 
@@ -41,11 +40,11 @@ function Profile() {
     switch (user?.role){
         case 'CLIENT':
             return (<Clients/>)
+        case 'ADMIN':
+            return (<Admins/>)
         default:
-            return (<>{error}</>)
+            return (<div className="p-10 text-red-500">Accès non autorisé ou erreur : {error}</div>)
     }
-
-    
     
 }
 
