@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import api from "../../api/axios"
 import Clients from "./components/Clients/Clients"
 import Admins from "./components/Admins/Admins"
+import Salons from "./components/Salons/Salons"
 
 interface User {
     role: string
@@ -40,6 +41,8 @@ function Profile() {
     switch (user?.role){
         case 'CLIENT':
             return (<Clients/>)
+        case 'SALON':
+            return (<Salons/>)
         case 'ADMIN':
             return (<Admins/>)
         default:
