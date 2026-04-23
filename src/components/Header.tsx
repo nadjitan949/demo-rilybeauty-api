@@ -22,6 +22,10 @@ function Header() {
         {
             name: "Salons",
             url: "/salons"
+        },
+        {
+            name: "Utilisateurs",
+            url: "/users"
         }
     ]
 
