@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import type User from "../interfaces"
+import type User from "../../../../../interfaces/UserInterface"
 import type { AxiosError } from "axios"
 import api from "../../../../../api/axios"
 import { Pencil, Trash } from "lucide-react"
