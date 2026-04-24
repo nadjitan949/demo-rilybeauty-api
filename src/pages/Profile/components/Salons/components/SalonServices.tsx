@@ -74,6 +74,36 @@ function SalonServices() {
         fetchServiceField()
     }, [selectedService])
 
+    const addService = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        try {
+
+            const res = await api.post("service/add", {
+                name: name,
+                price: price,
+                duration: duration,
+                description: description,
+                salonId: user?.salon?.id
+            })
+
+            alert(res.data.message)
+
+        } catch (err) {
+
+            const error = err as AxiosError<{ message: string }>;
+
+            if (error.response) {
+                setError(error.response.data.message || 'Identifiants invalides');
+                console.log("Erreur ", error)
+                alert(error)
+            } else {
+                setError('Impossible de joindre le serveur');
+                console.log("Erreur ", error)
+            }
+        }
+    }
+
     const updateService = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -176,11 +206,11 @@ function SalonServices() {
                     <section className="bg-white rounded-2xl shadow-2xl w-full max-w-lg relative overflow-hidden">
                         <div className="flex items-center justify-between p-5 border-b border-slate-100 bg-slate-50/50">
                             <h2 className="text-xl font-bold text-slate-800">Modifier le service</h2>
-                            <button onClick={() => setUpdateModal(false)} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 text-slate-500 hover:text-red-500 transition-colors">
+                            <button onClick={() => setAddServiceModal(false)} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 text-slate-500 hover:text-red-500 transition-colors">
                                 ✕
                             </button>
                         </div>
-                        <form onSubmit={updateService} className="p-5 flex flex-col gap-4">
+                        <form onSubmit={addService} className="p-5 flex flex-col gap-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="flex flex-col gap-1.5 col-span-2">
                                     <label className="text-sm font-medium text-slate-600">Nom du service</label>
