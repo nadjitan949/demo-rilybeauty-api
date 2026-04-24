@@ -132,6 +132,29 @@ function SalonServices() {
         }
     }
 
+    const deleteService = async (id: number) => {
+        try {
+
+            const isConfirm = confirm("Voulez-vous vraiment supprimer ce service ?")
+            if (!isConfirm) return
+
+            const res = await api.delete(`service/delete/${id}`)
+
+            alert(res.data.message)
+
+        } catch (err) {
+            const error = err as AxiosError<{ message: string }>;
+
+            if (error.response) {
+                setError(error.response.data.message || 'Identifiants invalides');
+                console.log("Erreur ", error)
+                alert(error)
+            } else {
+                setError('Impossible de joindre le serveur');
+                console.log("Erreur ", error)
+            }
+        }
+    }
 
     return (
         <>
@@ -139,7 +162,13 @@ function SalonServices() {
                 {/* 🟣 En-tête */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
                     <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Liste des services</h1>
-                    <button onClick={() => setAddServiceModal(true)} type="button" className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
+                    <button onClick={() => {
+                        setName("")
+                        setPrice(0)
+                        setDuration(0)
+                        setDescription("")
+                        setAddServiceModal(true)
+                    }} type="button" className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
                         ➕ Ajouter un service
                     </button>
                 </div>
@@ -163,19 +192,22 @@ function SalonServices() {
                                 {/* Actions */}
                                 <div className="flex gap-2 pt-3 border-t border-slate-100 mt-auto">
                                     <button
+                                        type='button'
                                         onClick={() => { setSelectedeService(s.id); setDetailsModal(true); }}
                                         className="flex-1 py-2 px-3 text-sm font-medium rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors text-slate-700"
                                     >
                                         👁️ Détails
                                     </button>
                                     <button
+                                        type='button'
                                         onClick={() => { setSelectedeService(s.id); setUpdateModal(true); }}
                                         className="flex-1 py-2 px-3 text-sm font-medium rounded-lg border border-violet-200 bg-violet-50 text-violet-700 hover:bg-violet-100 transition-colors"
                                     >
                                         ✏️ Modifier
                                     </button>
                                     <button
-                                        onClick={() => { /* Ta logique de suppression */ }}
+                                        type='button'
+                                        onClick={() => deleteService(s.id)}
                                         className="flex-1 py-2 px-3 text-sm font-medium rounded-lg border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 transition-colors"
                                     >
                                         🗑️ Supprimer
