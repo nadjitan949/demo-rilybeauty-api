@@ -1,9 +1,9 @@
 import type { AxiosError } from "axios";
 import api from "../../../../api/axios";
 import { useEffect, useState } from "react";
-import { 
-    Users, 
-    Store, 
+import {
+    Users,
+    Store,
     ShieldCheck,
     MoreVertical
 } from "lucide-react";
@@ -44,8 +44,22 @@ function Admins() {
                 // On récupère tout l'objet data (infos + users + salons)
                 setData(res.data);
             } catch (err) {
-                const axiosError = err as AxiosError<{ message: string }>;
-                setError(axiosError.response?.data?.message || 'Erreur de connexion');
+                const error = err as AxiosError<{ message: string }>;
+
+                if (error.response) {
+                    // ✅ Extrait ton message personnalisé de la réponse du serveur
+                    const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                    setError(customMessage);
+                    console.log("📩 Message backend :", customMessage);
+                    console.log("📦 Réponse complète :", error.response.data);
+                    alert(customMessage); // ✅ Affiche bien ton message personnalisé
+                } else {
+                    const networkMsg = 'Impossible de joindre le serveur';
+                    setError(networkMsg);
+                    console.log("🌐 Erreur réseau :", error.message);
+                    alert(networkMsg);
+                }
             } finally {
                 setLoading(false);
             }
@@ -69,7 +83,7 @@ function Admins() {
     return (
         <div className="min-h-screen bg-slate-50 p-4 md:p-8">
             <div className="max-w-7xl mx-auto">
-                
+
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                     <div>
@@ -94,7 +108,7 @@ function Admins() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    
+
                     {/* Liste des Utilisateurs */}
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                         <div className="p-6 border-b border-gray-50 flex justify-between items-center">
@@ -125,9 +139,8 @@ function Admins() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${
-                                                    u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
-                                                }`}>
+                                                <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
+                                                    }`}>
                                                     {u.role}
                                                 </span>
                                             </td>

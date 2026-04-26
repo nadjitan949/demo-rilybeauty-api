@@ -27,28 +27,35 @@ function Profile() {
                 const error = err as AxiosError<{ message: string }>;
 
                 if (error.response) {
-                    setError(error.response.data.message || 'Identifiants invalides');
-                    console.log("Erreur ", error)
+                    // ✅ Extrait ton message personnalisé de la réponse du serveur
+                    const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                    setError(customMessage);
+                    console.log("📩 Message backend :", customMessage);
+                    console.log("📦 Réponse complète :", error.response.data);
+                    alert(customMessage); // ✅ Affiche bien ton message personnalisé
                 } else {
-                    setError('Impossible de joindre le serveur');
-                    console.log("Erreur ", error)
+                    const networkMsg = 'Impossible de joindre le serveur';
+                    setError(networkMsg);
+                    console.log("🌐 Erreur réseau :", error.message);
+                    alert(networkMsg);
                 }
             }
         }
         profile()
     }, [])
 
-    switch (user?.role){
+    switch (user?.role) {
         case 'CLIENT':
-            return (<Clients/>)
+            return (<Clients />)
         case 'SALON':
-            return (<Salons/>)
+            return (<Salons />)
         case 'ADMIN':
-            return (<Admins/>)
+            return (<Admins />)
         default:
             return (<div className="p-10 text-red-500">Accès non autorisé ou erreur : {error}</div>)
     }
-    
+
 }
 
 export default Profile

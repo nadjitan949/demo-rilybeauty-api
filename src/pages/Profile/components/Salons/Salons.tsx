@@ -1,3 +1,4 @@
+import SalonAppointment from "./components/SalonAppointment"
 import SalonEmployee from "./components/SalonEmployee"
 import SalonProfil from "./components/SalonProfil"
 import SalonServices from "./components/SalonServices"
@@ -9,6 +10,7 @@ function Salons() {
         <SalonProfil />
         <SalonServices/>
         <SalonEmployee/>
+        <SalonAppointment/>
       </main>
     </>
   )

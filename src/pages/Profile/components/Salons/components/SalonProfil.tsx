@@ -39,11 +39,18 @@ function SalonProfil() {
                 const error = err as AxiosError<{ message: string }>;
 
                 if (error.response) {
-                    setError(error.response.data.message || 'Identifiants invalides');
-                    console.log("Erreur ", error)
+                    // ✅ Extrait ton message personnalisé de la réponse du serveur
+                    const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                    setError(customMessage);
+                    console.log("📩 Message backend :", customMessage);
+                    console.log("📦 Réponse complète :", error.response.data);
+                    alert(customMessage); // ✅ Affiche bien ton message personnalisé
                 } else {
-                    setError('Impossible de joindre le serveur');
-                    console.log("Erreur ", error)
+                    const networkMsg = 'Impossible de joindre le serveur';
+                    setError(networkMsg);
+                    console.log("🌐 Erreur réseau :", error.message);
+                    alert(networkMsg);
                 }
             }
         }
@@ -61,10 +68,10 @@ function SalonProfil() {
                 email: email,
                 phone: phone
             })
-            if(!userUpdate.data.success) return alert(userUpdate.data.message)
+            if (!userUpdate.data.success) return alert(userUpdate.data.message)
             alert(userUpdate.data.message)
 
-            if(name || address || country || city) {
+            if (name || address || country || city) {
                 const updateSalon = await api.put(`salon/update/${user?.salon?.id}`, {
                     name: name,
                     address: address,
@@ -72,7 +79,7 @@ function SalonProfil() {
                     city: city
                 })
 
-                if(!updateSalon.data.success) return alert(updateSalon.data.message)
+                if (!updateSalon.data.success) return alert(updateSalon.data.message)
 
                 alert(updateSalon.data.message)
             }
@@ -82,12 +89,18 @@ function SalonProfil() {
             const error = err as AxiosError<{ message: string }>;
 
             if (error.response) {
-                setError(error.response.data.message || 'Identifiants invalides');
-                console.log("Erreur ", error)
-                alert(error)
+                // ✅ Extrait ton message personnalisé de la réponse du serveur
+                const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                setError(customMessage);
+                console.log("📩 Message backend :", customMessage);
+                console.log("📦 Réponse complète :", error.response.data);
+                alert(customMessage); // ✅ Affiche bien ton message personnalisé
             } else {
-                setError('Impossible de joindre le serveur');
-                console.log("Erreur ", error)
+                const networkMsg = 'Impossible de joindre le serveur';
+                setError(networkMsg);
+                console.log("🌐 Erreur réseau :", error.message);
+                alert(networkMsg);
             }
         }
 

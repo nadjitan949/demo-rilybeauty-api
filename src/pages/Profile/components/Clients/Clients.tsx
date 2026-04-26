@@ -22,14 +22,28 @@ function Clients() {
         const fetchProfile = async () => {
             try {
                 const res = await api.get("/auth/profile");
-                
+
                 // On adapte selon la structure de ta réponse API
                 if (res.data) {
                     setUser(res.data.infos);
                 }
             } catch (err) {
-                const axiosError = err as AxiosError<{ message: string }>;
-                setError(axiosError.response?.data?.message || 'Erreur lors de la récupération du profil');
+                const error = err as AxiosError<{ message: string }>;
+
+                if (error.response) {
+                    // ✅ Extrait ton message personnalisé de la réponse du serveur
+                    const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                    setError(customMessage);
+                    console.log("📩 Message backend :", customMessage);
+                    console.log("📦 Réponse complète :", error.response.data);
+                    alert(customMessage); // ✅ Affiche bien ton message personnalisé
+                } else {
+                    const networkMsg = 'Impossible de joindre le serveur';
+                    setError(networkMsg);
+                    console.log("🌐 Erreur réseau :", error.message);
+                    alert(networkMsg);
+                }
             } finally {
                 setLoading(false);
             }
@@ -42,7 +56,7 @@ function Clients() {
     return (
         <section className="min-h-screen bg-slate-50 p-6 md:p-12">
             <div className="max-w-4xl mx-auto">
-                
+
                 {/* Header du profil */}
                 <div className="bg-white rounded-3xl p-8 shadow-sm border border-violet-100 mb-8 flex flex-col md:flex-row items-center gap-6">
                     <div className="w-24 h-24 bg-violet-600 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg shadow-violet-200">
@@ -64,7 +78,7 @@ function Clients() {
 
                 {/* Grille d'informations */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
+
                     {/* Carte Infos Contact */}
                     <div className="bg-white p-8 rounded-3xl shadow-sm border border-violet-50">
                         <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">

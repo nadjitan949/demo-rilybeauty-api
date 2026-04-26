@@ -105,11 +105,18 @@ function SalonEmployee() {
                 const error = err as AxiosError<{ message: string }>;
 
                 if (error.response) {
-                    setError(error.response.data.message || 'Identifiants invalides');
-                    console.log("Erreur ", error)
+                    // ✅ Extrait ton message personnalisé de la réponse du serveur
+                    const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                    setError(customMessage);
+                    console.log("📩 Message backend :", customMessage);
+                    console.log("📦 Réponse complète :", error.response.data);
+                    alert(customMessage); // ✅ Affiche bien ton message personnalisé
                 } else {
-                    setError('Impossible de joindre le serveur');
-                    console.log("Erreur ", error)
+                    const networkMsg = 'Impossible de joindre le serveur';
+                    setError(networkMsg);
+                    console.log("🌐 Erreur réseau :", error.message);
+                    alert(networkMsg);
                 }
             }
         }
@@ -135,11 +142,18 @@ function SalonEmployee() {
                 const error = err as AxiosError<{ message: string }>;
 
                 if (error.response) {
-                    setError(error.response.data.message || 'Identifiants invalides');
-                    console.log("Erreur ", error)
+                    // ✅ Extrait ton message personnalisé de la réponse du serveur
+                    const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                    setError(customMessage);
+                    console.log("📩 Message backend :", customMessage);
+                    console.log("📦 Réponse complète :", error.response.data);
+                    alert(customMessage); // ✅ Affiche bien ton message personnalisé
                 } else {
-                    setError('Impossible de joindre le serveur');
-                    console.log("Erreur ", error)
+                    const networkMsg = 'Impossible de joindre le serveur';
+                    setError(networkMsg);
+                    console.log("🌐 Erreur réseau :", error.message);
+                    alert(networkMsg);
                 }
             }
         }
@@ -163,11 +177,18 @@ function SalonEmployee() {
             const error = err as AxiosError<{ message: string }>;
 
             if (error.response) {
-                setError(error.response.data.message || 'Identifiants invalides');
-                console.log("Erreur ", error)
+                // ✅ Extrait ton message personnalisé de la réponse du serveur
+                const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                setError(customMessage);
+                console.log("📩 Message backend :", customMessage);
+                console.log("📦 Réponse complète :", error.response.data);
+                alert(customMessage); // ✅ Affiche bien ton message personnalisé
             } else {
-                setError('Impossible de joindre le serveur');
-                console.log("Erreur ", error)
+                const networkMsg = 'Impossible de joindre le serveur';
+                setError(networkMsg);
+                console.log("🌐 Erreur réseau :", error.message);
+                alert(networkMsg);
             }
         }
     }
@@ -188,11 +209,18 @@ function SalonEmployee() {
             const error = err as AxiosError<{ message: string }>;
 
             if (error.response) {
-                setError(error.response.data.message || 'Identifiants invalides');
-                console.log("Erreur ", error)
+                // ✅ Extrait ton message personnalisé de la réponse du serveur
+                const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                setError(customMessage);
+                console.log("📩 Message backend :", customMessage);
+                console.log("📦 Réponse complète :", error.response.data);
+                alert(customMessage); // ✅ Affiche bien ton message personnalisé
             } else {
-                setError('Impossible de joindre le serveur');
-                console.log("Erreur ", error)
+                const networkMsg = 'Impossible de joindre le serveur';
+                setError(networkMsg);
+                console.log("🌐 Erreur réseau :", error.message);
+                alert(networkMsg);
             }
         }
     }
@@ -216,11 +244,18 @@ function SalonEmployee() {
             const error = err as AxiosError<{ message: string }>;
 
             if (error.response) {
-                setError(error.response.data.message || 'Identifiants invalides');
-                console.log("Erreur ", error)
+                // ✅ Extrait ton message personnalisé de la réponse du serveur
+                const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                setError(customMessage);
+                console.log("📩 Message backend :", customMessage);
+                console.log("📦 Réponse complète :", error.response.data);
+                alert(customMessage); // ✅ Affiche bien ton message personnalisé
             } else {
-                setError('Impossible de joindre le serveur');
-                console.log("Erreur ", error)
+                const networkMsg = 'Impossible de joindre le serveur';
+                setError(networkMsg);
+                console.log("🌐 Erreur réseau :", error.message);
+                alert(networkMsg);
             }
         }
     }
@@ -243,12 +278,18 @@ function SalonEmployee() {
             const error = err as AxiosError<{ message: string }>;
 
             if (error.response) {
-                setError(error.response.data.message || 'Identifiants invalides');
-                console.log("Erreur ", error)
-                alert(error)
+                // ✅ Extrait ton message personnalisé de la réponse du serveur
+                const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                setError(customMessage);
+                console.log("📩 Message backend :", customMessage);
+                console.log("📦 Réponse complète :", error.response.data);
+                alert(customMessage); // ✅ Affiche bien ton message personnalisé
             } else {
-                setError('Impossible de joindre le serveur');
-                console.log("Erreur ", error)
+                const networkMsg = 'Impossible de joindre le serveur';
+                setError(networkMsg);
+                console.log("🌐 Erreur réseau :", error.message);
+                alert(networkMsg);
             }
         }
     }
@@ -267,17 +308,23 @@ function SalonEmployee() {
             )
 
             alert(res.data.message)
-            
+
         } catch (err) {
             const error = err as AxiosError<{ message: string }>;
 
             if (error.response) {
-                setError(error.response.data.message || 'Identifiants invalides');
-                console.log("Erreur ", error)
-                alert(error)
+                // ✅ Extrait ton message personnalisé de la réponse du serveur
+                const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                setError(customMessage);
+                console.log("📩 Message backend :", customMessage);
+                console.log("📦 Réponse complète :", error.response.data);
+                alert(customMessage); // ✅ Affiche bien ton message personnalisé
             } else {
-                setError('Impossible de joindre le serveur');
-                console.log("Erreur ", error)
+                const networkMsg = 'Impossible de joindre le serveur';
+                setError(networkMsg);
+                console.log("🌐 Erreur réseau :", error.message);
+                alert(networkMsg);
             }
         }
     }
@@ -286,22 +333,28 @@ function SalonEmployee() {
         try {
 
             const isConfirm = confirm("Voulez vous vraiment supprimer cet créneau ?")
-            if(!isConfirm) return
+            if (!isConfirm) return
 
             const res = await api.delete(`schedule/delete/${id}`)
 
             alert(res.data.message)
-            
+
         } catch (err) {
             const error = err as AxiosError<{ message: string }>;
 
             if (error.response) {
-                setError(error.response.data.message || 'Identifiants invalides');
-                console.log("Erreur ", error)
-                alert(error)
+                // ✅ Extrait ton message personnalisé de la réponse du serveur
+                const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
+
+                setError(customMessage);
+                console.log("📩 Message backend :", customMessage);
+                console.log("📦 Réponse complète :", error.response.data);
+                alert(customMessage); // ✅ Affiche bien ton message personnalisé
             } else {
-                setError('Impossible de joindre le serveur');
-                console.log("Erreur ", error)
+                const networkMsg = 'Impossible de joindre le serveur';
+                setError(networkMsg);
+                console.log("🌐 Erreur réseau :", error.message);
+                alert(networkMsg);
             }
         }
     }
