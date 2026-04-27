@@ -1,3 +1,4 @@
+import ReportingSalon from "./components/ReportingSalon"
 import SalonAppointment from "./components/SalonAppointment"
 import SalonEmployee from "./components/SalonEmployee"
 import SalonOpened from "./components/SalonOpened"
@@ -9,6 +10,7 @@ function Salons() {
     <>
       <main className="flex flex-col gap-10">
         <SalonProfil />
+        <ReportingSalon/>
         <SalonServices/>
         <SalonEmployee/>
         <SalonAppointment/>
