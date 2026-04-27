@@ -6,6 +6,7 @@ import type Appointment from "../../../../../interfaces/AppointmentInterfaces"
 import { Calendar, Clock, Scissors, Search, UserIcon } from "lucide-react"
 import type Service from "../../../../../interfaces/ServiceInterfaces"
 import type Employee from "../../../../../interfaces/EmployeeInterface"
+import ClientHistory from "./ClientHistory"
 
 function SalonAppointment() {
     const [detailsModal, setDetailsModal] = useState<boolean>(false)
@@ -47,6 +48,9 @@ function SalonAppointment() {
     const [selecteClient, setSelectedClient] = useState<number | null>(null)
     const [selectedService, setSelectedService] = useState<number | null>(null)
     const [selectdeEmployee, setSelectedEmployee] = useState<number | null>(null)
+
+    const [selectedUser, setSelectedUser] = useState<number | null>(null)
+    const [clientHistoryModal, setClientHistoryModal] = useState<boolean>(false)
 
     useEffect(() => {
         const profile = async () => {
@@ -565,7 +569,10 @@ function SalonAppointment() {
                                     <span>⏱️ {a.service?.duration} min</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                                    <div className="bg-white rounded-lg p-3 border border-slate-200 cursor-pointer" onClick={() => {
+                                        setSelectedUser(Number(a.user?.id))
+                                        setClientHistoryModal(true)
+                                    }}>
                                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-1">Client</span>
                                         <span className="text-slate-800 font-medium">{a.user?.firstname} {a.user?.lastname}</span><br />
                                         <span className="text-slate-500 text-sm">{a.user?.email}</span><br />
@@ -613,7 +620,10 @@ function SalonAppointment() {
                                     <span>⏱️ {a.service?.duration} min</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                                    <div className="bg-white rounded-lg p-3 border border-slate-200 cursor-pointer" onClick={() => {
+                                        setSelectedUser(Number(a.user?.id))
+                                        setClientHistoryModal(true)
+                                    }}>
                                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-1">Client</span>
                                         <span className="text-slate-800 font-medium">{a.user?.firstname} {a.user?.lastname}</span><br />
                                         <span className="text-slate-500 text-sm">{a.user?.email}</span><br />
@@ -661,7 +671,10 @@ function SalonAppointment() {
                                     <span>⏱️ {a.service?.duration} min</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                                    <div className="bg-white rounded-lg p-3 border border-slate-200 cursor-pointer" onClick={() => {
+                                        setSelectedUser(Number(a.user?.id))
+                                        setClientHistoryModal(true)
+                                    }}>
                                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-1">Client</span>
                                         <span className="text-slate-800 font-medium">{a.user?.firstname} {a.user?.lastname}</span><br />
                                         <span className="text-slate-500 text-sm">{a.user?.email}</span><br />
@@ -714,7 +727,10 @@ function SalonAppointment() {
                                     <span>⏱️ {a.service?.duration} min</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                                    <div className="bg-white rounded-lg p-3 border border-slate-200 cursor-pointer" onClick={() => {
+                                        setSelectedUser(Number(a.user?.id))
+                                        setClientHistoryModal(true)
+                                    }}>
                                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-1">Client</span>
                                         <span className="text-slate-800 font-medium">{a.user?.firstname} {a.user?.lastname}</span><br />
                                         <span className="text-slate-500 text-sm">{a.user?.email}</span><br />
@@ -770,7 +786,10 @@ function SalonAppointment() {
                                     <span>⏱️ {a.service?.duration} min</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                                    <div className="bg-white rounded-lg p-3 border border-slate-200 cursor-pointer" onClick={() => {
+                                        setSelectedUser(Number(a.user?.id))
+                                        setClientHistoryModal(true)
+                                    }}>
                                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-1">Client</span>
                                         <span className="text-slate-800 font-medium">{a.user?.firstname} {a.user?.lastname}</span><br />
                                         <span className="text-slate-500 text-sm">{a.user?.email}</span><br />
@@ -842,7 +861,10 @@ function SalonAppointment() {
                                 <p className="text-sm text-slate-500">Durée: {detailsAppointment?.service?.duration} min</p>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="p-4 bg-white rounded-xl border border-slate-200">
+                                <div className="p-4 bg-white rounded-xl border border-slate-200 cursor-pointer" onClick={() => {
+                                    setSelectedUser(Number(detailsAppointment?.user?.id))
+                                    setClientHistoryModal(true)
+                                }}>
                                     <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Client</span>
                                     <p className="font-medium text-slate-800">{detailsAppointment?.user?.firstname} {detailsAppointment?.user?.lastname}</p>
                                     <p className="text-sm text-slate-500">{detailsAppointment?.user?.email}</p>
@@ -1010,8 +1032,8 @@ function SalonAppointment() {
                                             type="button"
                                             onClick={() => setProvider(p.id as typeof provider)}
                                             className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all text-sm font-medium ${provider === p.id
-                                                    ? 'border-violet-500 bg-violet-50 text-violet-700 ring-2 ring-violet-200'
-                                                    : 'border-slate-200 hover:border-violet-300 hover:bg-slate-50 text-slate-600'
+                                                ? 'border-violet-500 bg-violet-50 text-violet-700 ring-2 ring-violet-200'
+                                                : 'border-slate-200 hover:border-violet-300 hover:bg-slate-50 text-slate-600'
                                                 }`}
                                         >
                                             <span className="text-xl mb-1">{p.icon}</span>
@@ -1038,8 +1060,8 @@ function SalonAppointment() {
                                             type="button"
                                             onClick={() => setCurrency(c.id as typeof currency)}
                                             className={`flex items-center justify-center gap-2 p-3 rounded-xl border transition-all text-sm font-medium ${currency === c.id
-                                                    ? 'border-violet-500 bg-violet-50 text-violet-700 ring-2 ring-violet-200'
-                                                    : 'border-slate-200 hover:border-violet-300 hover:bg-slate-50 text-slate-600'
+                                                ? 'border-violet-500 bg-violet-50 text-violet-700 ring-2 ring-violet-200'
+                                                : 'border-slate-200 hover:border-violet-300 hover:bg-slate-50 text-slate-600'
                                                 }`}
                                         >
                                             <span>{c.icon}</span> {c.label}
@@ -1272,6 +1294,10 @@ function SalonAppointment() {
                         </form>
                     </section>
                 </div>
+            )}
+
+            {clientHistoryModal && (
+                <ClientHistory userId={Number(selectedUser)} onClose={() => setClientHistoryModal(false)} />
             )}
         </>
     )

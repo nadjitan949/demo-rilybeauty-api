@@ -1,5 +1,6 @@
 import SalonAppointment from "./components/SalonAppointment"
 import SalonEmployee from "./components/SalonEmployee"
+import SalonOpened from "./components/SalonOpened"
 import SalonProfil from "./components/SalonProfil"
 import SalonServices from "./components/SalonServices"
 
@@ -11,6 +12,7 @@ function Salons() {
         <SalonServices/>
         <SalonEmployee/>
         <SalonAppointment/>
+        <SalonOpened/>
       </main>
     </>
   )
