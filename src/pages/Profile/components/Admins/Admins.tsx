@@ -5,7 +5,9 @@ import {
     Users,
     Store,
     ShieldCheck,
-    MoreVertical
+    MoreVertical,
+    Check,
+    Ban
 } from "lucide-react";
 
 // Types basés sur ton schéma Prisma
@@ -36,29 +38,22 @@ function Admins() {
     const [data, setData] = useState<AdminData | null>(null);
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
+    const [actionLoading, setActionLoading] = useState<number | null>(null); // Pour loader sur un salon spécifique
 
     useEffect(() => {
         const fetchAdminData = async () => {
             try {
                 const res = await api.get("/auth/profile");
-                // On récupère tout l'objet data (infos + users + salons)
                 setData(res.data);
             } catch (err) {
                 const error = err as AxiosError<{ message: string }>;
-
                 if (error.response) {
-                    // ✅ Extrait ton message personnalisé de la réponse du serveur
                     const customMessage = error.response.data?.message || error.response.statusText || 'Identifiants invalides';
-
                     setError(customMessage);
-                    console.log("📩 Message backend :", customMessage);
-                    console.log("📦 Réponse complète :", error.response.data);
-                    alert(customMessage); // ✅ Affiche bien ton message personnalisé
+                    alert(customMessage);
                 } else {
-                    const networkMsg = 'Impossible de joindre le serveur';
-                    setError(networkMsg);
-                    console.log("🌐 Erreur réseau :", error.message);
-                    alert(networkMsg);
+                    setError('Impossible de joindre le serveur');
+                    alert('Impossible de joindre le serveur');
                 }
             } finally {
                 setLoading(false);
@@ -66,6 +61,66 @@ function Admins() {
         };
         fetchAdminData();
     }, []);
+
+    // 🟣 Approuver un salon (PENDING → ACTIVE)
+    const handleApproveSalon = async (salonId: number) => {
+        const isConfirm = confirm("Voulez-vous approuver ce salon ? Il deviendra visible et actif.");
+        if (!isConfirm) return;
+
+        setActionLoading(salonId);
+        try {
+            const res = await api.patch(`salon/approve/${salonId}`);
+            alert(res.data.message || "Salon approuvé avec succès");
+            
+            // Mise à jour locale immédiate pour UX fluide
+            setData(prev => {
+                if (!prev) return prev;
+                return {
+                    ...prev,
+                    salons: prev.salons.map(s => 
+                        s.id === salonId ? { ...s, status: 'ACTIVE' } : s
+                    )
+                };
+            });
+        } catch (err) {
+            const error = err as AxiosError<{ message: string }>;
+            const msg = error.response?.data?.message || "Erreur lors de l'approbation";
+            setError(msg);
+            alert(msg);
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
+    // 🟣 Bannir un salon (ACTIVE → BANNED)
+    const handleBanSalon = async (salonId: number) => {
+        const isConfirm = confirm("⚠️ Attention : Bannir ce salon le rendra inaccessible. Êtes-vous sûr ?");
+        if (!isConfirm) return;
+
+        setActionLoading(salonId);
+        try {
+            const res = await api.patch(`salon/bann/${salonId}`);
+            alert(res.data.message);
+            
+            // Mise à jour locale immédiate
+            setData(prev => {
+                if (!prev) return prev;
+                return {
+                    ...prev,
+                    salons: prev.salons.map(s => 
+                        s.id === salonId ? { ...s, status: 'BANNED' } : s
+                    )
+                };
+            });
+        } catch (err) {
+            const error = err as AxiosError<{ message: string }>;
+            const msg = error.response?.data?.message || "Erreur lors du bannissement";
+            setError(msg);
+            alert(msg);
+        } finally {
+            setActionLoading(null);
+        }
+    };
 
     if (loading) return (
         <div className="flex flex-col justify-center items-center h-screen bg-slate-50">
@@ -171,10 +226,57 @@ function Admins() {
                                         </div>
                                         <div>
                                             <p className="text-sm font-bold text-gray-900">{salon.name || "Salon sans nom"}</p>
-                                            <p className="text-xs text-gray-500">{salon.city}, {salon.status}</p>
+                                            <p className="text-xs text-gray-500">{salon.city}</p>
                                         </div>
                                     </div>
-                                    <span className={`w-2 h-2 rounded-full ${salon.status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
+                                    
+                                    {/* 🟣 Zone d'action conditionnelle */}
+                                    <div className="flex items-center gap-3">
+                                        {/* Badge de statut */}
+                                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${
+                                            salon.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-700' :
+                                            salon.status === 'PENDING' ? 'bg-amber-100 text-amber-700' :
+                                            salon.status === 'BANNED' ? 'bg-red-100 text-red-700' :
+                                            'bg-gray-100 text-gray-600'
+                                        }`}>
+                                            {salon.status}
+                                        </span>
+                                        
+                                        {/* Boutons d'action */}
+                                        {salon.status === 'PENDING' && (
+                                            <button
+                                                onClick={() => handleApproveSalon(salon.id)}
+                                                disabled={actionLoading === salon.id}
+                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white text-xs font-semibold rounded-lg transition-all shadow-sm hover:shadow"
+                                            >
+                                                {actionLoading === salon.id ? (
+                                                    <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                ) : (
+                                                    <Check size={14} />
+                                                )}
+                                                Approuver
+                                            </button>
+                                        )}
+                                        
+                                        {salon.status === 'ACTIVE' && (
+                                            <button
+                                                onClick={() => handleBanSalon(salon.id)}
+                                                disabled={actionLoading === salon.id}
+                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-100 hover:bg-red-200 disabled:bg-red-50 text-red-700 text-xs font-semibold rounded-lg border border-red-200 transition-all"
+                                            >
+                                                {actionLoading === salon.id ? (
+                                                    <span className="w-3.5 h-3.5 border-2 border-red-300 border-t-red-600 rounded-full animate-spin" />
+                                                ) : (
+                                                    <Ban size={14} />
+                                                )}
+                                                Bannir
+                                            </button>
+                                        )}
+                                        
+                                        {salon.status === 'BANNED' && (
+                                            <button type="button" onClick={() => handleApproveSalon(salon.id)} className="px-3 py-1.5 bg-green-700 cursor-pointer hover:bg-green-500 rounded-md text-white text-sm">Reactiver</button>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
